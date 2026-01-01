@@ -15,19 +15,17 @@ export function ColourPicker({ label, colour, onChange, compact = false }: Colou
 
   if (compact) {
     return (
-      <div className="flex items-center gap-2">
-        <div className="relative">
+      <div className="flex flex-col gap-2">
+        <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">{label}</span>
+        <div className="flex items-center gap-2">
           <input
             type="color"
             value={colour}
             onChange={(e) => onChange(e.target.value)}
-            className="w-10 h-10 rounded-md cursor-pointer border border-border/60 bg-transparent transition-all duration-150 hover:border-primary/50"
+            className="w-10 h-10 rounded-lg cursor-pointer border border-border/60 bg-transparent transition-all duration-150 hover:border-primary/50 shrink-0"
             style={{ backgroundColor: colour }}
           />
-        </div>
-        <div className="flex flex-col gap-1">
-          <span className="control-label">{label}</span>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5 min-w-0">
             <input
               type="text"
               value={colour.toUpperCase()}
@@ -37,14 +35,14 @@ export function ColourPicker({ label, colour, onChange, compact = false }: Colou
                   onChange(value);
                 }
               }}
-              className="w-[72px] px-2 py-1 text-xs font-mono bg-secondary/80 border border-border/60 rounded-md focus:outline-none focus:border-primary/50 transition-colors"
+              className="w-[70px] px-2 py-1.5 text-xs font-mono bg-secondary/80 border border-border/60 rounded-md focus:outline-none focus:border-primary/50 transition-colors"
             />
             <button
               onClick={handleRandom}
-              className="p-1.5 text-muted-foreground hover:text-accent bg-secondary/80 hover:bg-accent/10 border border-border/60 hover:border-accent/50 rounded-md transition-all duration-150"
+              className="p-1.5 text-muted-foreground hover:text-accent bg-secondary/80 hover:bg-accent/10 border border-border/60 hover:border-accent/50 rounded-md transition-all duration-150 shrink-0"
               title="Random colour"
             >
-              <Shuffle size={10} />
+              <Shuffle size={12} />
             </button>
           </div>
         </div>
