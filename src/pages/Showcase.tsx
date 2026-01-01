@@ -21,7 +21,7 @@ const STORAGE_KEY = 'gradient-lab-config';
 
 const Showcase = () => {
   const [searchParams] = useSearchParams();
-  
+
   // Load from localStorage first
   const getInitialConfig = (): GradientConfig => {
     try {
@@ -227,7 +227,7 @@ const Showcase = () => {
                         </linearGradient>
                       </defs>
                       <Icon
-                        size={36}
+                        size={24}
                         stroke={`url(#iconGrad-${index})`}
                         strokeWidth={1.5}
                         fill="none"
