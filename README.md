@@ -1,73 +1,61 @@
-# Welcome to your Lovable project
+# CSS Gradient Lab
 
-## Project info
+CSS Gradient Lab is a sleek, modern web application designed for developers and designers to create beautiful, custom CSS gradients with ease. Experiment with different colours, styles, and directions, and get instant, copy-paste-ready CSS code for your projects.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- **Dynamic Gradient Types**: Create Linear, Radial, or Conic gradients with a single click.
+- **Precision Colour Selection**: Choose your primary and secondary colours using intuitive colour pickers.
+- **Directional Controls**: Easily adjust the orientation of your gradients (e.g., North, South-East, West).
+- **Multiple Colour Formats**: Copy code in your preferred format – HEX, RGBA, or HSLA.
+- **Instant Preview**: See your changes in real-time on a full-screen canvas.
+- **Randomise**: Quickly generate new inspiration with the randomise feature.
+- **Showcase**: View your gradient in a larger, distraction-free gallery layout.
+- **Responsive Design**: Optimised for both desktop and mobile devices.
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+This project is built with a modern, high-performance tech stack:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **React**: For a reactive and efficient user interface.
+- **TypeScript**: Ensuring type safety and robust code.
+- **Vite**: For lightning-fast development and build times.
+- **Tailwind CSS**: Providing utility-first styling for a premium aesthetic.
+- **shadcn/ui**: For consistent, high-quality accessible components.
+- **Lucide React**: Beautiful, consistent iconography.
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Ensure you have **Node.js** and **npm** installed on your system.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Local Development
 
-Follow these steps:
+Follow these steps to get a local development server running:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. **Clone the repository**:
+   ```sh
+   git clone <YOUR_GIT_URL>
+   cd gradient-garden
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. **Install dependencies**:
+   ```sh
+   npm install
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+3. **Start the development server**:
+   ```sh
+   npm run dev
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+The application will be available at `http://localhost:8080` (or the port specified in your terminal).
 
-**Edit a file directly in GitHub**
+## Deployment
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+The project is optimised for deployment via Netlify or similar platforms. Simply run `npm run build` to generate a production-ready bundle in the `dist` directory.
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+*Built with precision and style for the modern web.*
