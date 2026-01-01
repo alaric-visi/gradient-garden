@@ -17,17 +17,33 @@ import {
 } from 'lucide-react';
 import { generateGradientCSS, GradientConfig, Direction, GradientStyle, ColourFormat } from '@/lib/gradientUtils';
 
+const STORAGE_KEY = 'gradient-lab-config';
+
 const Showcase = () => {
   const [searchParams] = useSearchParams();
   
-  const [config, setConfig] = useState<GradientConfig>({
-    colour1: '#6366F1',
-    colour2: '#06B6D4',
-    style: 'linear',
-    format: 'hex',
-    direction: 'SE',
-  });
+  // Load from localStorage first
+  const getInitialConfig = (): GradientConfig => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error('Failed to load saved config:', e);
+    }
+    return {
+      colour1: '#6366F1',
+      colour2: '#06B6D4',
+      style: 'linear',
+      format: 'hex',
+      direction: 'SE',
+    };
+  };
 
+  const [config, setConfig] = useState<GradientConfig>(getInitialConfig);
+
+  // URL params take priority on mount
   useEffect(() => {
     const c1 = searchParams.get('c1');
     const c2 = searchParams.get('c2');
@@ -35,15 +51,26 @@ const Showcase = () => {
     const direction = searchParams.get('dir') as Direction | null;
     const format = searchParams.get('format') as ColourFormat | null;
 
-    setConfig((prev) => ({
-      ...prev,
-      ...(c1 && { colour1: `#${c1}` }),
-      ...(c2 && { colour2: `#${c2}` }),
-      ...(style && { style }),
-      ...(direction && { direction }),
-      ...(format && { format }),
-    }));
+    if (c1 || c2 || style || direction || format) {
+      setConfig((prev) => ({
+        ...prev,
+        ...(c1 && { colour1: `#${c1}` }),
+        ...(c2 && { colour2: `#${c2}` }),
+        ...(style && { style }),
+        ...(direction && { direction }),
+        ...(format && { format }),
+      }));
+    }
   }, [searchParams]);
+
+  // Save to localStorage whenever config changes
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+  }, [config]);
+
+  const handleColourChange = (colourKey: 'colour1' | 'colour2', value: string) => {
+    setConfig(prev => ({ ...prev, [colourKey]: value }));
+  };
 
   const gradient = generateGradientCSS(config);
 
@@ -68,6 +95,30 @@ const Showcase = () => {
       <Header config={config} />
 
       <main className="container mx-auto px-4 py-6 md:py-8 lg:py-12">
+        {/* Floating Colour Picker */}
+        <div className="fixed top-20 right-4 md:right-6 z-50">
+          <div className="glass-panel rounded-xl p-3 flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <label className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium">C1</label>
+              <input
+                type="color"
+                value={config.colour1}
+                onChange={(e) => handleColourChange('colour1', e.target.value)}
+                className="w-8 h-8 rounded-md cursor-pointer border border-border/50 bg-transparent"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <label className="text-[10px] uppercase tracking-wide text-muted-foreground font-medium">C2</label>
+              <input
+                type="color"
+                value={config.colour2}
+                onChange={(e) => handleColourChange('colour2', e.target.value)}
+                className="w-8 h-8 rounded-md cursor-pointer border border-border/50 bg-transparent"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Hero Section */}
         <div className="text-center mb-8 md:mb-12">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 tracking-tight">
