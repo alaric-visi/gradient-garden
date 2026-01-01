@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Shuffle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Shuffle, Eye } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { ColourPicker } from '@/components/ColourPicker';
 import { DirectionPicker } from '@/components/DirectionPicker';
 import { StyleSelector } from '@/components/StyleSelector';
 import { FormatSelector } from '@/components/FormatSelector';
-import { GradientPreview } from '@/components/GradientPreview';
 import { CodeOutput } from '@/components/CodeOutput';
 import {
   GradientStyle,
@@ -17,11 +17,28 @@ import {
 } from '@/lib/gradientUtils';
 
 const Index = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [colour1, setColour1] = useState('#6366F1');
   const [colour2, setColour2] = useState('#06B6D4');
   const [style, setStyle] = useState<GradientStyle>('linear');
   const [format, setFormat] = useState<ColourFormat>('hex');
   const [direction, setDirection] = useState<Direction>('SE');
+
+  // Load from URL params on mount
+  useEffect(() => {
+    const c1 = searchParams.get('c1');
+    const c2 = searchParams.get('c2');
+    const s = searchParams.get('style') as GradientStyle | null;
+    const d = searchParams.get('dir') as Direction | null;
+    const f = searchParams.get('format') as ColourFormat | null;
+
+    if (c1) setColour1(`#${c1}`);
+    if (c2) setColour2(`#${c2}`);
+    if (s) setStyle(s);
+    if (d) setDirection(d);
+    if (f) setFormat(f);
+  }, []);
 
   const config = { colour1, colour2, style, format, direction };
   const gradientCSS = generateGradientCSS(config);
@@ -32,104 +49,92 @@ const Index = () => {
     setColour2(generateRandomColour());
   };
 
+  const handleViewShowcase = () => {
+    const params = new URLSearchParams({
+      c1: colour1.replace('#', ''),
+      c2: colour2.replace('#', ''),
+      style,
+      dir: direction,
+      format,
+    });
+    navigate(`/showcase?${params.toString()}`);
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <div className="min-h-screen flex flex-col">
+      <Header config={config} />
       
-      <main className="container mx-auto px-4 py-8 lg:py-12">
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
-            CSS Gradient{' '}
-            <span className="gradient-text" style={{ backgroundImage: gradientCSS }}>
-              Generator
-            </span>
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Create beautiful CSS gradients with ease. Choose your colours, style, and direction,
-            then copy the generated code directly into your project.
-          </p>
+      {/* Full-screen gradient background */}
+      <main 
+        className="flex-1 relative"
+        style={{ background: gradientCSS }}
+      >
+        {/* Controls overlay - top left */}
+        <div className="absolute inset-0 overflow-auto">
+          <div className="min-h-full p-4 md:p-6 lg:p-8">
+            <div className="max-w-md">
+              {/* Main controls panel */}
+              <div className="glass-panel rounded-2xl p-4 md:p-6 space-y-6 backdrop-blur-xl bg-card/90">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <h1 className="text-lg md:text-xl font-semibold">Gradient Lab</h1>
+                  <button
+                    onClick={handleRandomBoth}
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
+                  >
+                    <Shuffle size={14} />
+                    <span className="hidden sm:inline">Random</span>
+                  </button>
+                </div>
+
+                {/* Colour Pickers */}
+                <div className="grid grid-cols-2 gap-3 md:gap-4">
+                  <ColourPicker
+                    label="Colour 1"
+                    colour={colour1}
+                    onChange={setColour1}
+                  />
+                  <ColourPicker
+                    label="Colour 2"
+                    colour={colour2}
+                    onChange={setColour2}
+                  />
+                </div>
+
+                {/* Style Selector */}
+                <StyleSelector style={style} onChange={setStyle} />
+
+                {/* Format Selector */}
+                <FormatSelector format={format} onChange={setFormat} />
+
+                {/* Direction Picker */}
+                <DirectionPicker direction={direction} onChange={setDirection} />
+
+                {/* Code Output */}
+                <div className="pt-2 border-t border-border/50">
+                  <CodeOutput css={fullCSS} />
+                </div>
+
+                {/* View Showcase Button */}
+                <button
+                  onClick={handleViewShowcase}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium bg-background/80 text-foreground rounded-xl hover:bg-background transition-colors border border-border/50"
+                >
+                  <Eye size={16} />
+                  View Showcase
+                </button>
+              </div>
+
+              {/* About section */}
+              <div className="glass-panel rounded-2xl p-4 md:p-6 mt-4 backdrop-blur-xl bg-card/90">
+                <h2 className="text-sm font-semibold mb-2">About</h2>
+                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                  Create beautiful CSS gradients with ease. Choose your colours, style, and direction,
+                  then copy the generated code directly into your project.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-          {/* Controls Panel */}
-          <div className="glass-panel rounded-2xl p-6 lg:p-8 space-y-8">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Customise</h2>
-              <button
-                onClick={handleRandomBoth}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
-              >
-                <Shuffle size={16} />
-                Random Both
-              </button>
-            </div>
-
-            {/* Colour Pickers */}
-            <div className="grid sm:grid-cols-2 gap-6">
-              <ColourPicker
-                label="Colour 1"
-                colour={colour1}
-                onChange={setColour1}
-              />
-              <ColourPicker
-                label="Colour 2"
-                colour={colour2}
-                onChange={setColour2}
-              />
-            </div>
-
-            {/* Style Selector */}
-            <StyleSelector style={style} onChange={setStyle} />
-
-            {/* Format Selector */}
-            <FormatSelector format={format} onChange={setFormat} />
-
-            {/* Direction Picker */}
-            <DirectionPicker direction={direction} onChange={setDirection} />
-          </div>
-
-          {/* Preview & Output Panel */}
-          <div className="space-y-8">
-            <GradientPreview gradient={gradientCSS} />
-            <div className="glass-panel rounded-2xl p-6">
-              <CodeOutput css={fullCSS} />
-            </div>
-          </div>
-        </div>
-
-        {/* Info Section */}
-        <section className="mt-16 glass-panel rounded-2xl p-8">
-          <h2 className="text-2xl font-semibold mb-4">About Gradient Lab</h2>
-          <div className="prose prose-invert max-w-none">
-            <p className="text-muted-foreground leading-relaxed">
-              Gradient Lab is a powerful CSS gradient generator that helps designers and developers
-              create stunning gradients with precision. Whether you're building a modern web application,
-              crafting a beautiful landing page, or simply experimenting with colour combinations,
-              this tool provides everything you need.
-            </p>
-            <div className="grid md:grid-cols-3 gap-6 mt-6">
-              <div className="p-4 rounded-lg bg-secondary/50 border border-border/50">
-                <h3 className="font-medium mb-2">Three Gradient Styles</h3>
-                <p className="text-sm text-muted-foreground">
-                  Choose from linear, radial, or conic gradients to achieve your desired effect.
-                </p>
-              </div>
-              <div className="p-4 rounded-lg bg-secondary/50 border border-border/50">
-                <h3 className="font-medium mb-2">Multiple Colour Formats</h3>
-                <p className="text-sm text-muted-foreground">
-                  Export your gradient in HEX, RGBa, or HSLa format to match your project requirements.
-                </p>
-              </div>
-              <div className="p-4 rounded-lg bg-secondary/50 border border-border/50">
-                <h3 className="font-medium mb-2">Instant Preview</h3>
-                <p className="text-sm text-muted-foreground">
-                  See your gradient update in real-time as you adjust colours and settings.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
     </div>
   );
