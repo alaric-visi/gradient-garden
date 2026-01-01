@@ -117,11 +117,11 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Style & Format */}
-            <div className="grid grid-cols-2 gap-4">
-              <StyleSelector style={style} onChange={setStyle} />
-              <FormatSelector format={format} onChange={setFormat} />
-            </div>
+            {/* Style */}
+            <StyleSelector style={style} onChange={setStyle} />
+
+            {/* Format */}
+            <FormatSelector format={format} onChange={setFormat} />
 
             {/* Direction & Showcase */}
             <div className="flex items-end justify-between gap-4">
