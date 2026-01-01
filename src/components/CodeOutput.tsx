@@ -28,9 +28,9 @@ export function CodeOutput({ css }: CodeOutputProps) {
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-muted-foreground">Generated CSS</label>
+        <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Generated CSS</label>
         <button
           onClick={handleCopy}
           className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-accent bg-secondary hover:bg-accent/10 border border-border hover:border-accent/50 rounded-lg transition-all duration-200"
@@ -40,8 +40,8 @@ export function CodeOutput({ css }: CodeOutputProps) {
         </button>
       </div>
       <div className="relative">
-        <pre className="p-4 bg-secondary rounded-lg border border-border overflow-x-auto">
-          <code className="text-sm font-mono text-foreground">{css}</code>
+        <pre className="p-3 bg-secondary/80 rounded-lg border border-border overflow-x-auto max-w-full">
+          <code className="text-[11px] font-mono text-foreground break-all whitespace-pre-wrap">{css}</code>
         </pre>
       </div>
     </div>

@@ -93,54 +93,57 @@ const Index = () => {
         className="flex-1 relative"
         style={{ background: gradientCSS }}
       >
-        {/* Desktop Controls - Compact panel */}
-        <div className="hidden md:block absolute top-4 left-4 z-10">
-          <div className="glass-panel rounded-xl p-4 w-[280px] space-y-3">
+        {/* Desktop Controls - Clean panel */}
+        <div className="hidden md:block absolute top-6 left-6 z-10">
+          <div className="glass-panel rounded-2xl p-6 w-[340px] space-y-5">
             {/* Header */}
-            <div className="flex items-center justify-between">
-              <h1 className="text-sm font-bold uppercase tracking-widest text-foreground/90">CSS Gradient Lab</h1>
+            <div className="flex items-center justify-between pb-3 border-b border-border/30">
+              <h1 className="text-base font-bold uppercase tracking-wider text-foreground">CSS Gradient Lab</h1>
               <button
                 onClick={handleRandomBoth}
-                className="p-1.5 text-muted-foreground hover:text-accent bg-secondary/80 hover:bg-accent/10 border border-border/60 hover:border-accent/50 rounded-md transition-all duration-150"
+                className="p-2 text-muted-foreground hover:text-accent bg-secondary/80 hover:bg-accent/10 border border-border/60 hover:border-accent/50 rounded-lg transition-all duration-150"
                 title="Randomise both colours"
               >
-                <Shuffle size={12} />
+                <Shuffle size={14} />
               </button>
             </div>
 
-            {/* Colour Pickers - side by side */}
-            <div className="grid grid-cols-2 gap-3">
-              <ColourPicker label="Colour 1" colour={colour1} onChange={setColour1} compact />
-              <ColourPicker label="Colour 2" colour={colour2} onChange={setColour2} compact />
+            {/* Colour Pickers */}
+            <div className="space-y-4">
+              <label className="control-label">Colours</label>
+              <div className="grid grid-cols-2 gap-4">
+                <ColourPicker label="Colour 1" colour={colour1} onChange={setColour1} compact />
+                <ColourPicker label="Colour 2" colour={colour2} onChange={setColour2} compact />
+              </div>
             </div>
 
-            {/* Style & Format Row */}
-            <div className="grid grid-cols-2 gap-3">
+            {/* Style & Format */}
+            <div className="grid grid-cols-2 gap-4">
               <StyleSelector style={style} onChange={setStyle} />
               <FormatSelector format={format} onChange={setFormat} />
             </div>
 
-            {/* Direction */}
-            <div className="flex items-start justify-between gap-3">
+            {/* Direction & Showcase */}
+            <div className="flex items-end justify-between gap-4">
               <DirectionPicker direction={direction} onChange={setDirection} />
               <button
                 onClick={handleViewShowcase}
-                className="flex items-center gap-1.5 px-3 py-2 text-[10px] font-semibold uppercase tracking-wide bg-background/80 text-foreground rounded-lg hover:bg-background transition-colors border border-border/50"
+                className="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide bg-background/90 text-foreground rounded-lg hover:bg-background transition-colors border border-border/50"
               >
-                <Eye size={12} />
+                <Eye size={14} />
                 Showcase
               </button>
             </div>
 
             {/* Code Output */}
-            <div className="pt-2 border-t border-border/30">
+            <div className="pt-4 border-t border-border/30">
               <CodeOutput css={fullCSS} />
             </div>
           </div>
         </div>
 
-        {/* Mobile Controls - Carousel style */}
-        <div className="md:hidden absolute inset-x-0 bottom-0 z-10 p-3">
+        {/* Mobile Controls - Carousel style at top */}
+        <div className="md:hidden absolute inset-x-0 top-0 z-10 p-3">
           <div className="glass-panel rounded-xl p-3">
             {/* Navigation header */}
             <div className="flex items-center justify-between mb-3">
