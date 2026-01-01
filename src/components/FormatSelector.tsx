@@ -3,6 +3,7 @@ import { ColourFormat } from '@/lib/gradientUtils';
 interface FormatSelectorProps {
   format: ColourFormat;
   onChange: (format: ColourFormat) => void;
+  compact?: boolean;
 }
 
 const formats: { key: ColourFormat; label: string }[] = [
@@ -11,16 +12,16 @@ const formats: { key: ColourFormat; label: string }[] = [
   { key: 'hsla', label: 'HSLa' },
 ];
 
-export function FormatSelector({ format, onChange }: FormatSelectorProps) {
+export function FormatSelector({ format, onChange, compact = false }: FormatSelectorProps) {
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium text-muted-foreground">Colour Format</label>
-      <div className="flex gap-2">
+    <div className="control-section">
+      {!compact && <label className="control-label">Format</label>}
+      <div className="flex gap-1.5">
         {formats.map(({ key, label }) => (
           <button
             key={key}
             onClick={() => onChange(key)}
-            className={`format-btn ${format === key ? 'active' : ''}`}
+            className={`format-btn flex-1 ${format === key ? 'active' : ''}`}
           >
             {label}
           </button>
