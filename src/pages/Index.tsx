@@ -230,10 +230,10 @@ const Index = () => {
           </div>
         </div>
 
-        {/* About - Desktop only */}
-        <div className="hidden lg:block absolute bottom-4 left-4 z-10">
-          <div className="glass-panel rounded-xl p-3 w-[280px]">
-            <p className="text-[10px] text-muted-foreground leading-relaxed">
+        {/* About - Desktop only, bottom right */}
+        <div className="hidden lg:block absolute bottom-6 right-6 z-10">
+          <div className="glass-panel rounded-xl p-4 max-w-[320px] text-right">
+            <p className="text-xs text-muted-foreground leading-relaxed">
               Create beautiful CSS gradients with ease. Choose your colours, style, and direction,
               then copy the generated code directly into your project.
             </p>
