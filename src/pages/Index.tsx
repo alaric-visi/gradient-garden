@@ -25,17 +25,40 @@ const mobileSections: { key: MobileSection; label: string; icon: typeof Palette 
   { key: 'code', label: 'Code', icon: Code },
 ];
 
+const STORAGE_KEY = 'gradient-lab-config';
+
 const Index = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [colour1, setColour1] = useState('#6366F1');
-  const [colour2, setColour2] = useState('#06B6D4');
-  const [style, setStyle] = useState<GradientStyle>('linear');
-  const [format, setFormat] = useState<ColourFormat>('hex');
-  const [direction, setDirection] = useState<Direction>('SE');
+  
+  // Load initial state from localStorage or defaults
+  const getInitialState = () => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error('Failed to load saved config:', e);
+    }
+    return {
+      colour1: '#6366F1',
+      colour2: '#06B6D4',
+      style: 'linear',
+      format: 'hex',
+      direction: 'SE',
+    };
+  };
+
+  const initial = getInitialState();
+  const [colour1, setColour1] = useState(initial.colour1);
+  const [colour2, setColour2] = useState(initial.colour2);
+  const [style, setStyle] = useState<GradientStyle>(initial.style);
+  const [format, setFormat] = useState<ColourFormat>(initial.format);
+  const [direction, setDirection] = useState<Direction>(initial.direction);
   const [mobileSection, setMobileSection] = useState<MobileSection>('colours');
 
-  // Load from URL params on mount
+  // Load from URL params on mount (URL params take priority)
   useEffect(() => {
     const c1 = searchParams.get('c1');
     const c2 = searchParams.get('c2');
@@ -49,6 +72,12 @@ const Index = () => {
     if (d) setDirection(d);
     if (f) setFormat(f);
   }, []);
+
+  // Save to localStorage whenever config changes
+  useEffect(() => {
+    const config = { colour1, colour2, style, format, direction };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+  }, [colour1, colour2, style, format, direction]);
 
   const config = { colour1, colour2, style, format, direction };
   const gradientCSS = generateGradientCSS(config);
